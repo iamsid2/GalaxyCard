@@ -9,6 +9,7 @@ module.exports = {
   getXMLBody: function createResponse(req) {
     var event = req.query.event;
     var data = req.query.data || "";
+    var data_ar = [];
     var cid = req.query.cid;
     var res;
     if (event) {
@@ -32,11 +33,12 @@ module.exports = {
         };
       } else if (event == "GotDTMF") {
         var m_or_f = req.query.sid.split("$")[1];
+        data_ar.push(data);
         if (m_or_f || data) {
           console.log("SID:: ", req.query.sid);
-          console.log("haha", data);
-          if (m_or_f) {
-            if (data == 1) {
+          console.log("haha", data_ar);
+          if (data_ar[0]) {
+            if (data_ar[0] == 1) {
               res = {
                 response: [
                   {
@@ -54,7 +56,7 @@ module.exports = {
                   }
                 ]
               };
-            } else if (data == 2) {
+            } else if (data_ar[0] == 2) {
               res = {
                 response: [
                   {
@@ -72,7 +74,7 @@ module.exports = {
                   }
                 ]
               };
-            } else if (data.length == 1) {
+            } else if (data_ar[0].length == 1) {
               res = {
                 response: [
                   {
@@ -94,7 +96,7 @@ module.exports = {
                 ]
               };
             }
-          } else if (data == 1) {
+          } else if (data[1] == 1) {
             res = {
               response: [
                 {
@@ -106,7 +108,7 @@ module.exports = {
                 }
               ]
             };
-          } else if (data == 2) {
+          } else if (data[1] == 2) {
             res = {
               response: [
                 {
