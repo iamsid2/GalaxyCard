@@ -16,141 +16,115 @@ module.exports = {
         res = {
           response: [
             {
-              playtext: "Welcome Mr. Siddhant."
+              playtext: "Welcome to Galaxy Card"
             },
             {
               collectdtmf: [
                 {
-                  _attr: { t: "#" }
+                  _attr: { t: "" }
                 },
                 {
-                  playtext: "Please enter 5 digit train number followed by #"
+                  playtext: "Press 1 if male  or Press 2 if female"
                 }
               ]
             }
           ]
         };
       } else if (event == "GotDTMF") {
-        var trainId = req.query.sid.split("$")[1];
-        if (trainId || data) {
+        var m_or_f = req.query.sid.split("$")[1];
+        if (m_or_f || data) {
           console.log("SID:: ", req.query.sid);
-          if (trainId) {
-            var trainDay = parseInt(data);
-            if (trainDay || trainDay == 0) {
-              if (trainDay == 1 || trainDay == 2 || trainDay == 3) {
-                var day = ["Yesterday", "Today", "Tomorrow"];
-                res = {
-                  response: [
-                    {
-                      playtext: train.getTrainStatus(trainId, trainDay)
-                    }
-                  ]
-                };
-              } else {
-                res = {
-                  response: [
-                    {
-                      _attr: { sid: cid + "$" + trainId }
-                    },
-                    {
-                      playtext: "Sorry, wrong input received."
-                    },
-                    {
-                      collectdtmf: [
-                        {
-                          _attr: { t: "#" }
-                        },
-                        {
-                          playtext:
-                            "Please select the date of journey followed by #"
-                        },
-                        {
-                          playtext:
-                            "1 for yesterday, 2 for today, 3 for tomorrow"
-                        }
-                      ]
-                    }
-                  ]
-                };
-              }
-            } else {
+          console.log("haha", data);
+          if (m_or_f) {
+            if (data == 1) {
               res = {
                 response: [
                   {
-                    _attr: { sid: cid + "$" + trainId }
-                  },
-                  {
-                    playtext: "Sorry, no input received."
+                    _attr: { sid: cid + "$" + m_or_f }
                   },
                   {
                     collectdtmf: [
                       {
-                        _attr: { t: "#" }
+                        _attr: { t: "" }
                       },
                       {
-                        playtext:
-                          "Please select the date of journey followed by #"
+                        playtext: "Press 1 if you are above 21 or else press 2 "
+                      }
+                    ]
+                  }
+                ]
+              };
+            } else if (data == 2) {
+              res = {
+                response: [
+                  {
+                    _attr: { sid: cid + "$" + m_or_f }
+                  },
+                  {
+                    collectdtmf: [
+                      {
+                        _attr: { t: "" }
                       },
                       {
-                        playtext: "1 for yesterday, 2 for today, 3 for tomorrow"
+                        playtext: "Press 1 if you are above 18 or else press 2 "
+                      }
+                    ]
+                  }
+                ]
+              };
+            } else if (data.length == 1) {
+              res = {
+                response: [
+                  {
+                    _attr: { sid: cid + "$" + m_or_f }
+                  },
+                  {
+                    collectdtmf: [
+                      {
+                        playtext: "Enter the Correct digit"
+                      },
+                      {
+                        _attr: { t: "" }
+                      },
+                      {
+                        playtext: "Press 1 if male  or Press 2 if female"
                       }
                     ]
                   }
                 ]
               };
             }
-          } else if (data.length == 5) {
-            var trainId = train.getTrainID(data);
-            if (trainId) {
-              res = {
-                response: [
-                  {
-                    _attr: { sid: cid + "$" + trainId }
-                  },
-                  {
-                    collectdtmf: [
-                      {
-                        _attr: { t: "#" }
-                      },
-                      {
-                        playtext:
-                          "Please select the date of journey followed by #"
-                      },
-                      {
-                        playtext: "1 for yesterday, 2 for today, 3 for tomorrow"
-                      }
-                    ]
-                  }
-                ]
-              };
-            } else {
-              res = {
-                response: [
-                  {
-                    collectdtmf: [
-                      {
-                        _attr: { t: "#" }
-                      },
-                      {
-                        playtext:
-                          "Sorry, no train found by this train number, Please enter the correct 5 digit train number followed by #."
-                      }
-                    ]
-                  }
-                ]
-              };
-            }
+          } else if (data == 1) {
+            res = {
+              response: [
+                {
+                  collectdtmf: [
+                    {
+                      playtext: "You are an adult"
+                    }
+                  ]
+                }
+              ]
+            };
+          } else if (data == 2) {
+            res = {
+              response: [
+                {
+                  collectdtmf: [
+                    {
+                      playtext: "Minors are not allowed"
+                    }
+                  ]
+                }
+              ]
+            };
           } else {
             res = {
               response: [
                 {
                   collectdtmf: [
                     {
-                      _attr: { t: "#" }
-                    },
-                    {
-                      playtext:
-                        "Please enter the correct 5 digit train number followed by #."
+                      playtext: "Wrong Input"
                     }
                   ]
                 }
@@ -166,10 +140,10 @@ module.exports = {
               {
                 collectdtmf: [
                   {
-                    _attr: { t: "#" }
+                    _attr: { t: "" }
                   },
                   {
-                    playtext: "Please enter 5 digit train number followed by #."
+                    playtext: "Please enter 1 if male and 2 if female."
                   }
                 ]
               }
@@ -181,7 +155,7 @@ module.exports = {
       res = {
         response: [
           {
-            hangup: ""
+            hangup: "Thanks for calling"
           }
         ]
       };
